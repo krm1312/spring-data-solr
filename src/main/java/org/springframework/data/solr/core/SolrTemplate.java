@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.CloudSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.SolrPingResponse;
 import org.apache.solr.client.solrj.response.UpdateResponse;
@@ -424,7 +425,11 @@ public class SolrTemplate implements SolrOperations, InitializingBean, Applicati
 
 	@Override
 	public final SolrServer getSolrServer() {
-		return solrServerFactory.getSolrServer(this.solrCore);
+		SolrServer server = solrServerFactory.getSolrServer(this.solrCore);
+		if (server instanceof CloudSolrServer) {
+		    ((CloudSolrServer)server).setDefaultCollection(this.solrCore);
+		}
+		return server;
 	}
 
 	@Override
