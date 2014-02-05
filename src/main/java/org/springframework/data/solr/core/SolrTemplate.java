@@ -425,11 +425,7 @@ public class SolrTemplate implements SolrOperations, InitializingBean, Applicati
 
 	@Override
 	public final SolrServer getSolrServer() {
-		SolrServer server = solrServerFactory.getSolrServer(this.solrCore);
-		if (server instanceof CloudSolrServer) {
-		    ((CloudSolrServer)server).setDefaultCollection(this.solrCore);
-		}
-		return server;
+		return solrServerFactory.getSolrServer(this.solrCore);
 	}
 
 	@Override

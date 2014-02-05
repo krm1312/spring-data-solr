@@ -197,8 +197,11 @@ public class SolrServerUtils {
 		Constructor<? extends SolrServer> constructor = (Constructor<? extends SolrServer>) ClassUtils
 				.getConstructorIfAvailable(solrServer.getClass(), String.class, LBHttpSolrServer.class);
 
-		return (SolrServer) BeanUtils.instantiateClass(constructor, zkHost,
+		CloudSolrServer clone = (CloudSolrServer) BeanUtils.instantiateClass(constructor, zkHost,
 				cloneLBHttpSolrServer(cloudServer.getLbServer(), core));
+
+		clone.setDefaultCollection(core);
+		return clone;
 	}
 
 	private static LBHttpSolrServer cloneSolr3LBHttpServer(SolrServer solrServer, String core)
